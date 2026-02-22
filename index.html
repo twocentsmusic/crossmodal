@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>What is this shape?</title>
+    <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugin-survey-text.js"></script>
+    <script src="jspsych/plugin-html-keyboard-response.js"></script>
+    <script src="jspsych/plugin-html-button-response.js"></script>
+    <script src="jspsych/plugin-preload.js"></script>
+    <script src="jspsych/plugin-audio-keyboard-response.js"></script>
+    <script src="jspsych/jsPsychSheet.js"></script>
+    <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+    <link href ="jspsych/jspsychsheet.css" rel="stylesheet" type="text/css" />
+    
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+    body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
+    .jspsych-display-element {
+        font-size: 24px;
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        }
+        
+    </style>
+
+</head>
+  <body>
+  <script>
+    var jsPsych = initJsPsych({
+      on_finish: function() {
+        url = "https://script.google.com/macros/s/AKfycbxPzk8RjDw74OyPw5Q_52LUbHmElHYNoa-JqvNVo87NHPkbeB6sFR4vVszr4kIuW9rVkA/exec";
+            jsPsychSheet.uploadData(url, jsPsych.data.get().csv())
+      },
+      default_iti: 250
+    });
+
+    var timeline = [];
+    
+    var AudioRound = ['sounds/round/r_ambous.mp3', 'sounds/round/r_boomeo.mp3', 'sounds/round/r_choondo.mp3', 'sounds/round/r_droamma.mp3',
+    'sounds/round/r_embrolo.mp3', 'sounds/round/r_foordam.mp3', 'sounds/round/r_grolous.mp3', 'sounds/round/r_honulo.mp3', 'sounds/round/r_irono.mp3',
+    'sounds/round/r_jubrous.mp3', 'sounds/round/r_lurhum.mp3', 'sounds/round/r_nommel.mp3', 'sounds/round/r_poom.mp3', 'sounds/round/r_romble.mp3',
+    'sounds/round/r_shoon.mp3', 'sounds/round/r_ugrude.mp3', 'sounds/round/r_wamua.mp3', 'sounds/round/r_yoorm.mp3'
+    ];
+    
+    var AudioSharp = ['sounds/sharp/s_ackic.mp3', 'sounds/sharp/s_caffack.mp3', 'sounds/sharp/s_dricket.mp3', 'sounds/sharp/s_exignak.mp3',
+    'sounds/sharp/s_fistick.mp3', 'sounds/sharp/s_grexite.mp3', 'sounds/sharp/s_hyphick.mp3', 'sounds/sharp/s_intanct.mp3', 'sounds/sharp/s_jecktra.mp3',
+    'sounds/sharp/s_kanktil.mp3', 'sounds/sharp/s_maxtan.mp3', 'sounds/sharp/s_nitick.mp3', 'sounds/sharp/s_prack.mp3', 'sounds/sharp/s_rackki.mp3',
+    'sounds/sharp/s_scratect.mp3', 'sounds/sharp/s_skic.mp3', 'sounds/sharp/s_tettic.mp3', 'sounds/sharp/s_xykipt.mp3'
+    ];
+    
+    var ShapeRound = ['images/R01.jpeg', 'images/R02.jpeg', 'images/R03.jpeg', 'images/R04.jpeg',
+    'images/R05.jpeg', 'images/R06.jpeg', 'images/R07.jpeg', 'images/R08.jpeg', 'images/R09.jpeg',
+    'images/R10.jpeg', 'images/R11.jpeg','images/R12.jpeg', 'images/R13.jpeg', 'images/R14.jpeg',
+    'images/R15.jpeg', 'images/R16.jpeg', 'images/R17.jpeg', 'images/R18.jpeg'
+    ]
+    
+    var ShapeSharp = ['images/S01.jpeg', 'images/S02.jpeg', 'images/S03.jpeg', 'images/S04.jpeg',
+    'images/S05.jpeg', 'images/S06.jpeg', 'images/S07.jpeg', 'images/S08.jpeg', 'images/S09.jpeg',
+    'images/S10.jpeg', 'images/S11.jpeg', 'images/S12.jpeg', 'images/S13.jpeg', 'images/S14.jpeg',
+    'images/S15.jpeg', 'images/S16.jpeg', 'images/S17.jpeg', 'images/S18.jpeg'
+    ]
+
+    var preload = {
+        type: jsPsychPreload,
+        audio: AudioRound.concat(AudioSharp),
+        images: ShapeRound.concat(ShapeSharp)
+    };
+        
+    var instructions = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `
+        <div style="text-align: left; margin: 3in; margin-bottom: 1in; margin-top: 1in;">
+            <p>Each screen will show a shape. <br> You will hear two words, shown at the bottom of the page.</br>
+                Your task is to select which of these words is most suitable for describing the shape.</br>
+                Click on the word you think best describes the shape.</p>
+            <p>Before we start, please adjust your volume to a comfortable listening level. </br>
+                On the next page, an audio will play. Please use your volume control to adjust the volume to your desired level.</p>
+                </div>
+                `,
+        choices: ['Start adjusting volume']
+      };
+
+       var volume = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `
+        <div style="text-align:left; margin:3in; margin-bottom:1in; margin-top:1in;">
+            <p>
+                Click play and adjust the volume using your device controls.<br>
+                Make sure it is comfortable and clear.
+                </p>
+                
+                <audio id="audio" src="VolumeAdjust.mp3"></audio>
+                
+                <div style="margin-top:30px;">
+                    <button onclick="document.getElementById('audio').play()" 
+                    style="font-size:20px; padding:10px 30px; margin-right:20px;">
+                    Play
+                    </button>
+                    
+                    <button onclick="document.getElementById('audio').pause(); document.getElementById('audio').currentTime=0;" 
+                    style="font-size:20px; padding:10px 30px;">
+                    Stop
+                    </button>
+                    </div>
+                </div>
+            `,
+        choices: ['I am done adjusting the volume, Ready to start.']
+    };
+
+    var round_pool = jsPsych.randomization.shuffle(
+        AudioRound.concat(AudioRound)
+    );
+    
+    var sharp_pool = jsPsych.randomization.shuffle(
+        AudioSharp.concat(AudioSharp)
+    );
+
+    var shapes = jsPsych.randomization.shuffle(
+        ShapeRound.concat(ShapeSharp)
+    );
+
+    function getFilename(path) {
+        return path.split('/').pop().replace('.mp3','').replace(/^[sr]_/, '');
+    }
+
+    var trials = [];
+    
+    for (var i = 0; i < 36; i++) {
+        var audio_pair = jsPsych.randomization.shuffle([
+            round_pool[i],
+            sharp_pool[i]
+        ]);
+        
+        trials.push({
+            shape: shapes[i],
+            audio1: audio_pair[0],
+            audio2: audio_pair[1],
+            label1: getFilename(audio_pair[0]),
+            label2: getFilename(audio_pair[1])
+        });
+    }
+
+    var shape_audio_trial = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: function(){
+            var shape = jsPsych.timelineVariable('shape');
+            return `
+            <div>
+                <img src="${shape}" style="height:300px;">
+                </div>
+                `;
+            },
+            
+            choices: function(){
+                return [
+                    jsPsych.timelineVariable('label1'),
+                    jsPsych.timelineVariable('label2')
+                ];
+            },
+            
+            button_html: `
+            <button class="jspsych-btn response-btn" disabled style="
+            font-size:24px;
+            padding:20px 40px;
+            margin:20px;
+            width:250px;
+            opacity:0.5;
+            cursor:not-allowed;
+            ">%choice%</button>
+            `,
+
+            on_load: function(){
+                var audio1 = jsPsych.timelineVariable('audio1', true);
+                var audio2 = jsPsych.timelineVariable('audio2', true);
+                var sound1 = new Audio(audio1);
+                var sound2 = new Audio(audio2);
+                
+                var enableButtons = function(){
+                    var buttons = document.querySelectorAll(".response-btn");
+                    buttons.forEach(function(btn){
+                        btn.disabled = false;
+                        btn.style.opacity = "1";
+                        btn.style.cursor = "pointer";
+                    });
+                };
+                
+                sound1.play();
+                
+                sound1.onended = function(){
+                    sound2.play();
+                };
+                
+                sound2.onended = function(){
+                    enableButtons();
+                };
+            },
+            
+            on_finish: function(data){
+                var audio1 = jsPsych.timelineVariable('audio1', true);
+                var audio2 = jsPsych.timelineVariable('audio2', true);
+                var label1 = jsPsych.timelineVariable('label1', true);
+                var label2 = jsPsych.timelineVariable('label2', true);
+
+                var selected_audio = data.response === 0 ? audio1 : audio2;
+                var selected_label = data.response === 0 ? label1 : label2;
+
+                data.selected_label = selected_label;
+                data.selected_audio = selected_audio;
+                data.selected_category = AudioRound.includes(selected_audio) ? "round" : "sharp";
+
+                var shape = jsPsych.timelineVariable('shape', true);
+                data.shape = shape;
+                data.shape_category = ShapeRound.includes(shape) ? "round" : "sharp";
+            }
+        };
+
+    var procedure = {
+        timeline: [shape_audio_trial],
+        timeline_variables: trials
+    };
+
+    var debrief = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: function(){
+
+            var trials = jsPsych.data.get().filterCustom(trial =>
+                trial.selected_audio !== undefined && trial.shape !== undefined
+            );
+
+            var congruent = 0;
+
+            trials.values().forEach(function(trial){
+                var selectedAudio = trial.selected_audio; // full path
+                var shape = trial.shape; // full path
+
+                var audioIsRound = AudioRound.includes(selectedAudio);
+                var audioIsSharp = AudioSharp.includes(selectedAudio);
+
+                var shapeIsRound = ShapeRound.includes(shape);
+                var shapeIsSharp = ShapeSharp.includes(shape);
+
+                if ((audioIsRound && shapeIsRound) || (audioIsSharp && shapeIsSharp)){
+                    congruent += 1;
+                }
+            });
+
+            var total = trials.count();
+            var congruentPercent = total > 0 ? Math.round((congruent / total) * 100) : 0;
+
+            return `
+                <h2>Debrief</h2>
+                <p>Congruent pairing: ${congruentPercent}%</p>
+                <p>Incongruent pairing: ${100 - congruentPercent}%</p>
+                <p>Research has shown that the relationship between speech sounds and visual shapes is often non-arbitrary, demonstrating cross-modal correspondences between what we see and what we hear.</p>
+                <p>In this experiment, you were asked to select which sound best matches the shape displayed on the screen.</p>
+                <p>Most people tend to associate sharper, more angular sounds with spiky or pointed shapes, and rounder, softer sounds with smooth, rounded shapes.</p>
+                <p>Your responses were <strong>${congruentPercent}% congruent</strong> with these typical associations.</p>
+            `;
+        },
+        choices: ['Finish']
+    };
+
+    timeline.push(preload);
+    timeline.push(instructions);
+    timeline.push(volume);
+    timeline.push(procedure);
+    timeline.push(debrief);
+    
+    jsPsych.run(timeline);
+
+    </script>
+  </body>
+</html>
